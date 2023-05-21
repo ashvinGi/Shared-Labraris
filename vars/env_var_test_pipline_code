@@ -1,0 +1,93 @@
+@Library("mylibrary")_
+
+pipeline
+{
+    agent any
+    stages
+    {
+        stage("Continouse-Download")
+        {
+            steps
+            {
+                
+            script
+            {
+            cicd.newGit("https://github.com/ashvinGi/maven.git")
+            }
+            
+            }
+        }
+        
+        stage("Continouse-Build")
+        {
+            steps
+            {
+                
+            script
+            {
+            cicd.newMaven()
+            }
+            
+            }
+        }
+        
+         stage("Continouse-Deploy")
+        {
+            steps
+            {
+                
+            script
+            {
+            cicd.newDeploy("${env.JOB_NAME}","172.31.40.202","testapp")
+            }
+            
+            }
+        }
+        
+         stage("Continouse-Testing")
+        {
+            steps
+            {
+                
+            script
+            {
+            cicd.newGit("https://github.com/ashvinGi/FunctionalTesting.git")
+            }
+            
+            }
+        }
+        
+        
+         stage("Continouse-Test")
+        {
+            steps
+            {
+                
+            script
+            {
+            cicd.newTest("${env.JOB_NAME}")
+            }
+            
+            }
+        }
+        
+         stage("Continouse-Delivery")
+        {
+            steps
+            {
+                
+            script
+            {
+            cicd.newDeploy("${env.JOB_NAME}","172.31.42.49","prodapp")
+            }
+            
+            }
+        }
+        
+        
+        
+        
+    }
+    
+    
+}
